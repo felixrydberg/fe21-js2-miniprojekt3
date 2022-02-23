@@ -18,5 +18,37 @@ import Products from './modules/Products.js';
       .catch((error) => alert(`gaming: ${error}`));
   })();
 
-  function spawnProducts(data) {}
+  function spawnProducts(products) {
+    const main = document.querySelector('main');
+
+    for (let i in products) {
+      const containerForCards = document.createElement('div');
+      containerForCards.classList.add('product-card');
+      containerForCards.setAttribute('id', products[i].getId());
+
+      const itemCard = document.createElement('div');
+      itemCard.classList.add('card');
+
+      const productName = document.createElement('h1');
+      productName.innerText = products[i].getName();
+
+      const currentStock = document.createElement('p');
+      currentStock.innerText = products[i].getAmount();
+
+      const itemPrice = document.createElement('p');
+      itemPrice.innerText = products[i].getPrice();
+
+      const productImage = document.createElement('img');
+      productImage.setAttribute('src', products[i].getUrl());
+      productImage.setAttribute('alt', products[i].getName());
+
+      containerForCards.appendChild(productName);
+      itemCard.appendChild(productImage);
+      itemCard.appendChild(itemPrice);
+      itemCard.appendChild(currentStock);
+      containerForCards.append(itemCard);
+
+      main.appendChild(containerForCards);
+    }
+  }
 })();

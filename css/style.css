@@ -31,3 +31,8 @@ main {
 footer {
   grid-row: 3;
 }
+
+img {
+  width: 400px;
+  height: 400px;
+}

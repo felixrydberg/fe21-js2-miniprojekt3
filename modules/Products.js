@@ -21,10 +21,10 @@ export default class Products {
     return this.#name;
   }
   getPrice() {
-    return this.#url;
+    return this.#price;
   }
   getUrl() {
-    return this.#price;
+    return this.#url;
   }
   setAmount(amount) {
     this.#amount = amount;

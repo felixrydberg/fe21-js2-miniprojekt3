@@ -13,7 +13,7 @@ export default class Cart {
   }
 
   removeProduct(index) {
-    const { items } = this.#cart[index];
+    const { items } = this.#cart[index - 1];
     if (items > 1) {
       this.#cart[index].items--;
     } else {

@@ -33,10 +33,10 @@ import Products from './modules/Products.js';
       productName.innerText = products[i].getName();
 
       const currentStock = document.createElement('p');
-      currentStock.innerText = products[i].getAmount();
+      currentStock.innerText = `Lager: ${products[i].getAmount()}`;
 
       const itemPrice = document.createElement('p');
-      itemPrice.innerText = products[i].getPrice();
+      itemPrice.innerText = `${products[i].getPrice()} kr`;
 
       const productImage = document.createElement('img');
       productImage.setAttribute('src', products[i].getUrl());

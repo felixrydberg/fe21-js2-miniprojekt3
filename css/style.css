@@ -28,11 +28,11 @@ main {
   grid-row: 2;
 }
 
-footer {
-  grid-row: 3;
+main .product-card .card img {
+  width: 491px;
+  height: 708px;
 }
 
-img {
-  width: 400px;
-  height: 400px;
+footer {
+  grid-row: 3;
 }

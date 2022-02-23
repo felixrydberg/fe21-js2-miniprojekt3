@@ -1,0 +1,33 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: #222;
+  height: 100vh;
+}
+
+.grid-container {
+  display: grid;
+  grid-template: 4rem auto 4rem / auto;
+  height: 100%;
+}
+
+header,
+main,
+footer {
+  border: 1px solid white;
+}
+
+header {
+  grid-row: 1;
+}
+
+main {
+  grid-row: 2;
+}
+
+footer {
+  grid-row: 3;
+}

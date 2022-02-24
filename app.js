@@ -42,10 +42,14 @@ import Products from './modules/Products.js';
       productImage.setAttribute('src', products[i].getUrl());
       productImage.setAttribute('alt', products[i].getName());
 
+      const button = document.createElement('button');
+      button.innerText = 'BUY';
+
       containerForCards.appendChild(productName);
       itemCard.appendChild(productImage);
       itemCard.appendChild(itemPrice);
       itemCard.appendChild(currentStock);
+      itemCard.appendChild(button);
       containerForCards.append(itemCard);
 
       main.appendChild(containerForCards);

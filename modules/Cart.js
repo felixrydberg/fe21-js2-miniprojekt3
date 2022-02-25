@@ -9,9 +9,27 @@ export default class Cart {
 
   #cart = [];
 
-  addToCart(product) {
-    this.#product = product;
-    this.#cart.push(this.#product);
+  addItem(product) {
+    const index = this.#cart.findIndex((val) => val.id === product.id);
+    console.log(index);
+
+    if (this.getItems() !== -1) {
+      this.#product = product;
+      this.#cart.push(this.#product);
+
+      // this.#cart[index] =
+    } else {
+      this.#product = product;
+      this.#cart.push(this.#product);
+    }
+
+    /* this.#cart.map((val) => {
+       if (val.id === product.id) {
+          product.items++;
+          this.#product = product;
+          this.#cart.splice(val, 1, this.#product);
+        } 
+      });*/
   }
 
   updateCart(index) {
@@ -22,14 +40,15 @@ export default class Cart {
       this.#cart.splice(index, 1);
     }
   }
-  getCartItems() {
+  getItems() {
     if (this.#cart.length === 0) {
       return -1;
     } else {
+      console.log(this.#cart);
       return this.#cart;
     }
   }
-  getCartTotalSum() {
+  getTotalSum() {
     let total = 0;
     this.#cart.map((val) => {
       total += val.price * val.items;

@@ -37,8 +37,14 @@ footer {
   grid-row: 3;
 }
 
-button {
+.cartbtn {
   width: 50px;
   height: 50px;
   background-color: white;
+}
+.product-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
 }

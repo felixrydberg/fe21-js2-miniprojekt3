@@ -23,13 +23,11 @@ export default class Cart {
   updateCart(index) {
     const i = this.#cart.findIndex((val) => val.id === index);
 
-    if (this.getItems() !== -1) {
-      if (i !== -1) {
-        if (this.#cart[i].items > 1) {
-          this.#cart[i].items--;
-        } else {
-          this.#cart.splice(i, 1);
-        }
+    if (i !== -1) {
+      if (this.#cart[i].items > 1) {
+        this.#cart[i].items--;
+      } else {
+        this.#cart.splice(i, 1);
       }
     }
   }

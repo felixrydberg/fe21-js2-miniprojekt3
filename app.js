@@ -82,7 +82,6 @@ import Products from './modules/Products.js';
     // This snippet is for removing/decrement item from cart
     /* if (cart.getItems() !== -1) {
       cart.updateCart(parseInt(arg));
-    }
-    */
+    } */
   };
 })();

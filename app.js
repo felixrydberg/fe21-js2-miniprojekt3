@@ -1,9 +1,12 @@
+// @ts-nocheck
 import Cart from './modules/Cart.js';
 import Products from './modules/Products.js';
 
 (function () {
-  (async function () {
+  // On load, get data from database and create array of products
+  (async () => {
     let products = [];
+
     await fetch(
       'https://shoppingsite-457c2-default-rtdb.europe-west1.firebasedatabase.app/.json'
     )
@@ -13,18 +16,15 @@ import Products from './modules/Products.js';
           const { amount, id, name, price, url } = d[key];
           products.push(new Products(amount, id, name, price, url));
         }
-        spawnProducts(products);
       })
       .catch((error) => alert(`gaming: ${error}`));
-  })();
+    // Create instance of cart and send to button listeners
 
-  function spawnProducts(products) {
     const main = document.querySelector('main');
 
     for (let i in products) {
       const containerForCards = document.createElement('div');
       containerForCards.classList.add('product-card');
-      containerForCards.setAttribute('id', products[i].getId());
 
       const itemCard = document.createElement('div');
       itemCard.classList.add('card');
@@ -43,7 +43,9 @@ import Products from './modules/Products.js';
       productImage.setAttribute('alt', products[i].getName());
 
       const button = document.createElement('button');
-      button.innerText = 'BUY';
+      button.classList.add('cartbtn');
+      button.setAttribute('value', products[i].getId());
+      button.innerText = 'Add to cart';
 
       containerForCards.appendChild(productName);
       itemCard.appendChild(productImage);
@@ -54,5 +56,27 @@ import Products from './modules/Products.js';
 
       main.appendChild(containerForCards);
     }
-  }
+    clickEvent(products);
+  })();
+
+  const clickEvent = (products) => {
+    const buttons = document.querySelectorAll('.cartbtn');
+    const cart = new Cart();
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        addItemToCart(cart, products, button.value);
+      });
+    });
+  };
+  const addItemToCart = (cart, products, index) => {
+    cart.addItem({
+      id: products[index].getId(),
+      name: products[index].getName(),
+      price: products[index].getPrice(),
+      items: 1,
+    });
+    checkoutPanel(cart);
+  };
+
+  const checkoutPanel = (cart) => {};
 })();

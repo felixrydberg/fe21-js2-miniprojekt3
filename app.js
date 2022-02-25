@@ -70,13 +70,19 @@ import Products from './modules/Products.js';
   };
   const addItemToCart = (cart, products, index) => {
     cart.addItem({
-      id: products[index].getId(),
-      name: products[index].getName(),
-      price: products[index].getPrice(),
+      id: products[index - 1].getId(),
+      name: products[index - 1].getName(),
+      price: products[index - 1].getPrice(),
       items: 1,
     });
-    checkoutPanel(cart);
+    checkoutPanel(cart, index);
   };
 
-  const checkoutPanel = (cart) => {};
+  const checkoutPanel = (cart, ...arg) => {
+    // This snippet is for removing/decrement item from cart
+    /* if (cart.getItems() !== -1) {
+      cart.updateCart(parseInt(arg));
+    }
+    */
+  };
 })();

@@ -62,6 +62,7 @@ import Products from './modules/Products.js';
   const clickEvent = (products) => {
     const buttons = document.querySelectorAll('.cartbtn');
     const cart = new Cart();
+    checkoutPanel(cart);
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
         addItemToCart(cart, products, button.value);
@@ -78,5 +79,22 @@ import Products from './modules/Products.js';
     checkoutPanel(cart);
   };
 
-  const checkoutPanel = (cart) => {};
+  const checkoutPanel = (cart) => {
+    const parent = document.querySelector('.nav-cart'),
+      ul = document.createElement('ul');
+    parent.addEventListener('mouseover', function () {
+      // Appends ul child
+      console.log('In');
+    });
+    parent.addEventListener('mouseout', function () {
+      // Removed ul child
+      console.log('Out');
+    });
+    while (parent.firstChild) {
+      parent.removeChild(parent.lastChild);
+    }
+    for (let key in cart) {
+      let li = document.createElement('li');
+    }
+  };
 })();

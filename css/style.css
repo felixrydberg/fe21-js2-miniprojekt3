@@ -17,11 +17,17 @@ body {
 header,
 main,
 footer {
-  border: 1px solid white;
 }
 
 header {
   grid-row: 1;
+}
+
+header nav .nav-cart {
+  height: 4rem;
+  width: 4rem;
+  background: red;
+  cursor: pointer;
 }
 
 main {

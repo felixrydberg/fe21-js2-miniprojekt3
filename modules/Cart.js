@@ -31,6 +31,15 @@ export default class Cart {
       }
     }
   }
+  incrementItem(index) {
+    const i = this.#cart.findIndex((val) => val.id === index);
+
+    if (i !== -1) {
+      if (this.#cart[i].items > 1) {
+        this.#cart[i].items++;
+      }
+    }
+  }
   removeItem(index) {
     const i = this.#cart.findIndex((val) => val.id === index);
 

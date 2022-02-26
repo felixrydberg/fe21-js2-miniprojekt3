@@ -20,7 +20,7 @@ export default class Cart {
     }
   }
 
-  updateCart(index) {
+  decrementItem(index) {
     const i = this.#cart.findIndex((val) => val.id === index);
 
     if (i !== -1) {
@@ -29,6 +29,13 @@ export default class Cart {
       } else {
         this.#cart.splice(i, 1);
       }
+    }
+  }
+  removeItem(index) {
+    const i = this.#cart.findIndex((val) => val.id === index);
+
+    if (i !== -1) {
+      this.#cart.splice(i, 1);
     }
   }
   getItems() {

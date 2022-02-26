@@ -3,13 +3,29 @@ import Cart from './modules/Cart.js';
 import Products from './modules/Products.js';
 
 (function () {
+  // Firebase object which enables updating database
+  const firebase = {
+    url: 'https://shoppingsite-457c2-default-rtdb.europe-west1.firebasedatabase.app/.json',
+
+    getData: async function () {
+      return await fetch(this.url);
+    },
+    patchData: async function (data) {
+      return await fetch(this.url, {
+        method: 'PATCH',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      });
+    },
+  };
   // On load, get data from database and create array of products
   (async () => {
     let products = [];
 
-    await fetch(
-      'https://shoppingsite-457c2-default-rtdb.europe-west1.firebasedatabase.app/.json'
-    )
+    await firebase
+      .getData()
       .then((r) => r.json())
       .then((d) => {
         for (let key in d) {
@@ -76,6 +92,7 @@ import Products from './modules/Products.js';
       items: 1,
     });
     checkoutPanel(cart, index);
+    updateStorage(products, cart, index);
   };
 
   const checkoutPanel = (cart, ...arg) => {
@@ -83,5 +100,21 @@ import Products from './modules/Products.js';
     /* if (cart.getItems() !== -1) {
       cart.updateCart(parseInt(arg));
     } */
+  };
+
+  // Function to update storage tally.
+  const updateStorage = (products, cart, index) => {
+    const i = cart
+      .getItems()
+      .findIndex((val) => val.id === products[index - 1].getId());
+
+    for (let index in products) {
+      if (i !== -1) {
+        products[i].setAmount(
+          products[index].getAmount() - cart.getItems()[i].items
+        );
+      }
+    }
+    console.log(products[i].getId(), products[i].getAmount());
   };
 })();

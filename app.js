@@ -65,6 +65,13 @@ import { firebase } from './modules/DB.js';
     const buttons = document.querySelectorAll('.cartbtn');
     const cart = new Cart();
     checkoutPanel(cart);
+
+    //////////////////////////
+
+    checkout(cart);
+
+    //////////////////////////
+
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
         addItemToCart(cart, products, button.value);
@@ -77,8 +84,17 @@ import { firebase } from './modules/DB.js';
       name: products[index - 1].getName(),
       price: products[index - 1].getPrice(),
       items: 1,
+      url: products[index - 1].getUrl(),
+      amount: products[index - 1].getAmount(),
     });
     checkoutPanel(cart);
+
+    //////////////////////////
+
+    checkout(cart);
+
+    //////////////////////////
+
     updateStorage(products, cart, index);
   };
 
@@ -115,21 +131,21 @@ import { firebase } from './modules/DB.js';
         const increment = document.createElement('button');
         increment.innerHTML = '+';
         increment.setAttribute('value', cartitems[key].id);
-        increment.addEventListener('onclick', function () {
+        increment.addEventListener('click', function () {
           //Add number of items on this item
         });
 
         const decrement = document.createElement('button');
         decrement.innerHTML = '-';
         decrement.setAttribute('value', cartitems[key].id);
-        decrement.addEventListener('onclick', function () {
+        decrement.addEventListener('click', function () {
           //Remove one number of items on this item
         });
 
         const remove = document.createElement('button');
         remove.innerHTML = 'X';
         remove.setAttribute('value', cartitems[key].id);
-        remove.addEventListener('onclick', function () {
+        remove.addEventListener('click', function () {
           //Remove item from cart
         });
 
@@ -163,5 +179,15 @@ import { firebase } from './modules/DB.js';
       }
     }
     console.log(products[i].getId(), products[i].getAmount());
+  };
+
+  const checkout = (cart) => {
+    console.log(cart);
+    for (let key in cart) {
+      const { amount, id, name, price, url } = cart[key];
+      console.log(amount, id, name, price, url);
+    }
+
+    // await patchData();
   };
 })();

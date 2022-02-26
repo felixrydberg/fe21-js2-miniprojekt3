@@ -35,10 +35,10 @@ import { firebase } from './modules/DB.js';
       productName.innerText = products[i].getName();
 
       const currentStock = document.createElement('p');
-      currentStock.innerText = products[i].getAmount();
+      currentStock.innerText = `Lager: ${products[i].getAmount()}`;
 
       const itemPrice = document.createElement('p');
-      itemPrice.innerText = products[i].getPrice();
+      itemPrice.innerText = `${products[i].getPrice()} kr`;
 
       const productImage = document.createElement('img');
       productImage.setAttribute('src', products[i].getUrl());
@@ -64,6 +64,7 @@ import { firebase } from './modules/DB.js';
   const clickEvent = (products) => {
     const buttons = document.querySelectorAll('.cartbtn');
     const cart = new Cart();
+    checkoutPanel(cart);
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
         addItemToCart(cart, products, button.value);
@@ -77,15 +78,75 @@ import { firebase } from './modules/DB.js';
       price: products[index - 1].getPrice(),
       items: 1,
     });
-    checkoutPanel(cart, index);
+    checkoutPanel(cart);
     updateStorage(products, cart, index);
   };
 
-  const checkoutPanel = (cart, ...arg) => {
-    // This snippet is for removing/decrement item from cart
-    /* if (cart.getItems() !== -1) {
-      cart.updateCart(parseInt(arg));
-    } */
+  const checkoutPanel = (cart) => {
+    const items = cart.getItems();
+    console.log(items);
+    if (items === -1) {
+    } else {
+      const parent = document.querySelector('.nav-cart');
+      const ul = document.createElement('ul');
+      ul.classList.add('cart-list');
+      while (parent.firstChild) {
+        parent.removeChild(parent.lastChild);
+      }
+      const cartitems = cart.getItems();
+      console.clear();
+      console.log(cartitems);
+
+      for (let key in cartitems) {
+        const container = document.createElement('li');
+
+        const itemContainer = document.createElement('ul');
+        itemContainer.classList.add('item-container');
+
+        const name = document.createElement('li');
+        name.innerHTML = cartitems[key].name;
+
+        const price = document.createElement('li');
+        price.innerHTML = cartitems[key].price;
+
+        const amount = document.createElement('li');
+        amount.innerHTML = cartitems[key].items;
+
+        const increment = document.createElement('button');
+        increment.innerHTML = '+';
+        increment.setAttribute('value', cartitems[key].id);
+        increment.addEventListener('onclick', function () {
+          //Add number of items on this item
+        });
+
+        const decrement = document.createElement('button');
+        decrement.innerHTML = '-';
+        decrement.setAttribute('value', cartitems[key].id);
+        decrement.addEventListener('onclick', function () {
+          //Remove one number of items on this item
+        });
+
+        const remove = document.createElement('button');
+        remove.innerHTML = 'X';
+        remove.setAttribute('value', cartitems[key].id);
+        remove.addEventListener('onclick', function () {
+          //Remove item from cart
+        });
+
+        itemContainer.appendChild(name);
+        itemContainer.appendChild(price);
+        itemContainer.appendChild(increment);
+        itemContainer.appendChild(amount);
+        itemContainer.appendChild(decrement);
+        itemContainer.appendChild(remove);
+        container.appendChild(itemContainer);
+        ul.appendChild(container);
+      }
+      parent.appendChild(ul);
+      parent.addEventListener('click', function () {
+        document.querySelector('.nav-cart ul').style.display = 'block';
+      });
+    }
   };
 
   // Function to update storage tally.

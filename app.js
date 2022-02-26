@@ -78,26 +78,74 @@ import { firebase } from './modules/DB.js';
       price: products[index - 1].getPrice(),
       items: 1,
     });
-    checkoutPanel(cart, index);
+    checkoutPanel(cart);
     updateStorage(products, cart, index);
   };
 
   const checkoutPanel = (cart) => {
-    const parent = document.querySelector('.nav-cart'),
-      ul = document.createElement('ul');
-    parent.addEventListener('mouseover', function () {
-      // Appends ul child
-      console.log('In');
-    });
-    parent.addEventListener('mouseout', function () {
-      // Removed ul child
-      console.log('Out');
-    });
-    while (parent.firstChild) {
-      parent.removeChild(parent.lastChild);
-    }
-    for (let key in cart) {
-      let li = document.createElement('li');
+    const items = cart.getItems();
+    console.log(items);
+    if (items === -1) {
+    } else {
+      const parent = document.querySelector('.nav-cart');
+      const ul = document.createElement('ul');
+      ul.classList.add('cart-list');
+      while (parent.firstChild) {
+        parent.removeChild(parent.lastChild);
+      }
+      const cartitems = cart.getItems();
+      console.clear();
+      console.log(cartitems);
+
+      for (let key in cartitems) {
+        const container = document.createElement('li');
+
+        const itemContainer = document.createElement('ul');
+        itemContainer.classList.add('item-container');
+
+        const name = document.createElement('li');
+        name.innerHTML = cartitems[key].name;
+
+        const price = document.createElement('li');
+        price.innerHTML = cartitems[key].price;
+
+        const amount = document.createElement('li');
+        amount.innerHTML = cartitems[key].items;
+
+        const increment = document.createElement('button');
+        increment.innerHTML = '+';
+        increment.setAttribute('value', cartitems[key].id);
+        increment.addEventListener('onclick', function () {
+          //Add number of items on this item
+        });
+
+        const decrement = document.createElement('button');
+        decrement.innerHTML = '-';
+        decrement.setAttribute('value', cartitems[key].id);
+        decrement.addEventListener('onclick', function () {
+          //Remove one number of items on this item
+        });
+
+        const remove = document.createElement('button');
+        remove.innerHTML = 'X';
+        remove.setAttribute('value', cartitems[key].id);
+        remove.addEventListener('onclick', function () {
+          //Remove item from cart
+        });
+
+        itemContainer.appendChild(name);
+        itemContainer.appendChild(price);
+        itemContainer.appendChild(increment);
+        itemContainer.appendChild(amount);
+        itemContainer.appendChild(decrement);
+        itemContainer.appendChild(remove);
+        container.appendChild(itemContainer);
+        ul.appendChild(container);
+      }
+      parent.appendChild(ul);
+      parent.addEventListener('click', function () {
+        document.querySelector('.nav-cart ul').style.display = 'block';
+      });
     }
   };
 

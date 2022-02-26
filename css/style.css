@@ -10,7 +10,7 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template: 4rem auto 4rem / auto;
+  grid-template: auto auto 4rem / auto;
   height: 100%;
 }
 
@@ -24,14 +24,45 @@ header {
 }
 
 header nav .nav-cart {
+  display: inline-block;
   height: 4rem;
-  width: 4rem;
+  min-width: 4rem;
   background: red;
   cursor: pointer;
+  z-index: 1;
+}
+
+header nav .nav-cart img {
+  height: 4rem;
+  width: 4rem;
+}
+
+header nav .nav-cart .cart-list {
+  display: none;
+}
+
+header nav .nav-cart ul li .item-container {
+  display: flex;
+  list-style: none;
+}
+
+header nav .nav-cart ul li .item-container li {
+  background: white;
+  padding: 0.5rem;
+}
+
+header nav .nav-cart ul li .item-container button {
+  height: 2rem;
+  width: 2rem;
+  border: none;
 }
 
 main {
   grid-row: 2;
+}
+
+main .product-card {
+  margin: 0.5rem 0 0.5rem 0;
 }
 
 main .product-card .card img {

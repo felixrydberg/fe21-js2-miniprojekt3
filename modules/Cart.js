@@ -61,16 +61,16 @@ export default class Cart {
     let sum = {
       total: 0,
       discounted: 0,
-      totalItems: 0,
+      items: 0,
     };
     this.#cart.map((val) => {
       if (val.items > 3) {
         sum.discounted += Math.round(val.items * val.price * val.discount);
         sum.total += val.items * val.price;
-        sum.totalItems += val.items;
+        sum.items += val.items;
       } else {
         sum.total += val.items * val.price;
-        sum.totalItems += val.items;
+        sum.items += val.items;
       }
     });
 

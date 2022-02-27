@@ -168,7 +168,7 @@ import { Patch } from './modules/Patch.js';
 
     // Total sum elements
     for (let total in totals) {
-      let suffix = total === 'totalItems' ? 'st' : 'kr';
+      let suffix = total === 'items' ? 'st' : 'kr';
 
       const list = document.createElement('ul');
       list.className = `list`;

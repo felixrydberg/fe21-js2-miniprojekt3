@@ -1,11 +1,13 @@
 export default class Products {
   #amount;
+  #discount;
   #id;
   #name;
   #price;
   #url;
-  constructor(amount, id, name, price, url) {
+  constructor(amount, discount, id, name, price, url) {
     this.#amount = amount;
+    this.#discount = discount;
     this.#id = id;
     this.#name = name;
     this.#price = price;
@@ -25,6 +27,9 @@ export default class Products {
   }
   getUrl() {
     return this.#url;
+  }
+  getDiscount() {
+    return this.#discount;
   }
   setAmount(amount) {
     this.#amount = amount;

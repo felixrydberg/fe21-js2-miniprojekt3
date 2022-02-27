@@ -5,6 +5,9 @@ export default class Cart {
     name: undefined,
     price: undefined,
     items: undefined,
+    url: undefined,
+    amount: undefined,
+    discount: undefined,
   };
 
   #cart = [];

@@ -24,12 +24,17 @@ img {
 header {
   grid-row: 1;
 }
-.nav-cart {
+.nav-cart,
+.sum-container {
   display: flex;
   flex-direction: column;
 }
+.sum-container {
+  align-items: flex-end;
+}
 
-header nav .nav-cart {
+header nav .nav-cart,
+.sum-container {
   display: inline-block;
   height: 5rem;
   min-width: 4rem;
@@ -43,11 +48,13 @@ header nav .nav-cart img {
   width: 4rem;
 }
 
-header nav .nav-cart .cart-list {
+header nav .nav-cart .cart-list,
+.sum-container {
   display: none;
 }
 
-header nav .nav-cart ul li .item-container {
+header nav .nav-cart ul li .item-container,
+.sum-container {
   display: flex;
   list-style: none;
 }
@@ -114,4 +121,11 @@ footer {
 .product-items {
   text-align: center;
   width: 10rem;
+}
+.list {
+  display: flex;
+  list-style-type: none;
+}
+.list li {
+  padding: 0.3rem;
 }

@@ -1,4 +1,4 @@
-export class PatchObj {
+export class Patch {
   #amount;
   #discount;
   #id;

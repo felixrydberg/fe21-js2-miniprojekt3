@@ -58,11 +58,25 @@ export default class Cart {
     }
   }
   getTotalSum() {
-    let total = 0;
+    let sum = {
+      total: 0,
+      discounted: 0,
+      totalItems: 0,
+    };
     this.#cart.map((val) => {
-      total += val.price * val.items;
+      if (val.items > 3) {
+        sum.discounted += Math.round(val.items * val.price * val.discount);
+        sum.total += val.items * val.price;
+        sum.totalItems += val.items;
+      } else {
+        sum.total += val.items * val.price;
+        sum.totalItems += val.items;
+      }
     });
-    return total;
+
+    sum.total -= sum.discounted;
+
+    return sum;
   }
   checkout() {
     this.#cart = [];

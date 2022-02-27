@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Cart from './modules/Cart.js';
 import Products from './modules/Products.js';
-import { firebase } from './modules/DB.js';
+import { getData, patchData } from './modules/DB.js';
 
 (function () {
   // Firebase object which enables updating database
@@ -10,8 +10,7 @@ import { firebase } from './modules/DB.js';
   (async () => {
     let products = [];
 
-    await firebase
-      .getData()
+    await getData()
       .then((r) => r.json())
       .then((d) => {
         for (let key in d) {
@@ -64,7 +63,7 @@ import { firebase } from './modules/DB.js';
   const clickEvent = (products) => {
     const buttons = document.querySelectorAll('.cartbtn');
     const cart = new Cart();
-    checkoutPanel(cart);
+
     buttons.forEach((button) => {
       button.addEventListener('click', () => {
         addItemToCart(cart, products, button.value);
@@ -78,72 +77,79 @@ import { firebase } from './modules/DB.js';
       price: products[index - 1].getPrice(),
       items: 1,
     });
-    checkoutPanel(cart);
+    shoppingCart(cart);
     updateStorage(products, cart, index);
   };
 
-  const checkoutPanel = (cart) => {
-    const items = cart.getItems();
-    console.log(items);
-    if (items === -1) {
-    } else {
-      const parent = document.querySelector('.nav-cart');
-      const ul = document.createElement('ul');
-      ul.classList.add('cart-list');
-      while (parent.firstChild) {
-        parent.removeChild(parent.lastChild);
-      }
-      const cartitems = cart.getItems();
-      console.clear();
-      console.log(cartitems);
+  // Create and populate sho
+  const shoppingCart = (cart) => {
+    const parent = document.querySelector('.nav-cart');
+    parent.classList.add('hidden');
+    const ul = document.createElement('ul');
+    ul.classList.add('cart-list');
+    while (parent.firstChild) {
+      parent.removeChild(parent.lastChild);
+    }
 
-      for (let key in cartitems) {
-        const container = document.createElement('li');
+    for (let key in cart.getItems()) {
+      const { id, name, price, items } = cart.getItems()[key];
 
-        const itemContainer = document.createElement('ul');
-        itemContainer.classList.add('item-container');
+      const container = document.createElement('li');
 
-        const name = document.createElement('li');
-        name.innerHTML = cartitems[key].name;
+      const itemContainer = document.createElement('ul');
+      itemContainer.classList.add('item-container');
 
-        const price = document.createElement('li');
-        price.innerHTML = cartitems[key].price;
+      const nameDiv = document.createElement('li');
+      nameDiv.innerText = name.toUpperCase();
 
-        const amount = document.createElement('li');
-        amount.innerHTML = cartitems[key].items;
+      const priceDiv = document.createElement('li');
+      priceDiv.classList.add('product-items');
+      priceDiv.innerText = price;
 
-        const increment = document.createElement('button');
-        increment.innerHTML = '+';
-        increment.setAttribute('value', cartitems[key].id);
-        increment.addEventListener('onclick', function () {
-          //Add number of items on this item
-        });
+      const amount = document.createElement('li');
+      amount.classList.add('product-items');
+      amount.innerText = items;
 
-        const decrement = document.createElement('button');
-        decrement.innerHTML = '-';
-        decrement.setAttribute('value', cartitems[key].id);
-        decrement.addEventListener('onclick', function () {
-          //Remove one number of items on this item
-        });
+      const increment = document.createElement('button');
+      increment.innerText = '+';
+      increment.setAttribute('value', id);
+      increment.classList.add('countbtn');
+      increment.addEventListener('click', () => {
+        cart.incrementItem(id);
+        shoppingCart(cart);
+      });
 
-        const remove = document.createElement('button');
-        remove.innerHTML = 'X';
-        remove.setAttribute('value', cartitems[key].id);
-        remove.addEventListener('onclick', function () {
-          //Remove item from cart
-        });
+      const decrement = document.createElement('button');
+      decrement.innerText = '-';
+      decrement.setAttribute('value', id);
+      decrement.classList.add('countbtn');
+      decrement.addEventListener('click', () => {
+        cart.decrementItem(id);
+        shoppingCart(cart);
+      });
 
-        itemContainer.appendChild(name);
-        itemContainer.appendChild(price);
-        itemContainer.appendChild(increment);
-        itemContainer.appendChild(amount);
-        itemContainer.appendChild(decrement);
-        itemContainer.appendChild(remove);
-        container.appendChild(itemContainer);
-        ul.appendChild(container);
-      }
-      parent.appendChild(ul);
-      parent.addEventListener('click', function () {
+      const remove = document.createElement('button');
+      remove.innerText = 'X';
+      remove.setAttribute('value', id);
+      remove.classList.add('countbtn');
+      remove.addEventListener('click', () => {
+        cart.removeItem(id);
+        shoppingCart(cart);
+      });
+
+      itemContainer.appendChild(nameDiv);
+      itemContainer.appendChild(priceDiv);
+      itemContainer.appendChild(increment);
+      itemContainer.appendChild(amount);
+      itemContainer.appendChild(decrement);
+      itemContainer.appendChild(remove);
+      container.appendChild(itemContainer);
+      ul.appendChild(container);
+    }
+    parent.appendChild(ul);
+
+    if (cart.getItems() !== -1) {
+      parent.addEventListener('click', () => {
         document.querySelector('.nav-cart ul').style.display = 'block';
       });
     }

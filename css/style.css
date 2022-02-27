@@ -18,16 +18,22 @@ header,
 main,
 footer {
 }
-
+img {
+  background-color: white;
+}
 header {
   grid-row: 1;
+}
+.nav-cart {
+  display: flex;
+  flex-direction: column;
 }
 
 header nav .nav-cart {
   display: inline-block;
-  height: 4rem;
+  height: 5rem;
   min-width: 4rem;
-  background: red;
+  background: white;
   cursor: pointer;
   z-index: 1;
 }
@@ -84,4 +90,28 @@ footer {
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: center;
+}
+.item-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.item-container li:first-child {
+  width: 20vw;
+}
+.item-container li {
+  width: 5rem;
+}
+.item-container li + button {
+  height: 3rem;
+}
+.countbtn {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+}
+.product-items {
+  text-align: center;
+  width: 10rem;
 }

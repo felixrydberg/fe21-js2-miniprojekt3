@@ -20,8 +20,8 @@ export default class Cart {
     }
   }
 
-  decrementItem(index) {
-    const i = this.#cart.findIndex((val) => val.id === index);
+  decrementItem(id) {
+    const i = this.#cart.findIndex((val) => val.id === id);
 
     if (i !== -1) {
       if (this.#cart[i].items > 1) {
@@ -31,8 +31,8 @@ export default class Cart {
       }
     }
   }
-  incrementItem(index) {
-    const i = this.#cart.findIndex((val) => val.id === index);
+  incrementItem(id) {
+    const i = this.#cart.findIndex((val) => val.id === id);
 
     if (i !== -1) {
       if (this.#cart[i].items > 1) {
@@ -40,8 +40,8 @@ export default class Cart {
       }
     }
   }
-  removeItem(index) {
-    const i = this.#cart.findIndex((val) => val.id === index);
+  removeItem(id) {
+    const i = this.#cart.findIndex((val) => val.id === id);
 
     if (i !== -1) {
       this.#cart.splice(i, 1);

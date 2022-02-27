@@ -1,16 +1,23 @@
-export const firebase = {
-  url: 'https://shoppingsite-457c2-default-rtdb.europe-west1.firebasedatabase.app/.json',
-
-  getData: async function () {
-    return await fetch(this.url);
-  },
-  patchData: async function (data) {
-    return await fetch(this.url, {
+export const getData = async () => {
+  return await fetch(
+    'https://shoppingsite-457c2-default-rtdb.europe-west1.firebasedatabase.app/.json'
+  );
+};
+export const patchData = async (data, id) => {
+  const index = id - 1;
+  return await fetch(
+    `https://shoppingsite-457c2-default-rtdb.europe-west1.firebasedatabase.app/${index}.json`,
+    {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
       },
-    });
-  },
+    }
+  );
+};
+
+export default {
+  getData,
+  patchData,
 };

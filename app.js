@@ -2,6 +2,7 @@
 import Cart from './modules/Cart.js';
 import Products from './modules/Products.js';
 import { getData, patchData } from './modules/DB.js';
+import { PatchObj } from './modules/Patch.js';
 
 (function () {
   // Firebase object which enables updating database
@@ -14,8 +15,8 @@ import { getData, patchData } from './modules/DB.js';
       .then((r) => r.json())
       .then((d) => {
         for (let key in d) {
-          const { amount, id, name, price, url } = d[key];
-          products.push(new Products(amount, id, name, price, url));
+          const { amount, discount, id, name, price, url } = d[key];
+          products.push(new Products(amount, discount, id, name, price, url));
         }
       })
       .catch((error) => alert(`gaming: ${error}`));
@@ -78,6 +79,7 @@ import { getData, patchData } from './modules/DB.js';
       items: 1,
       url: products[index - 1].getUrl(),
       amount: products[index - 1].getAmount(),
+      discount: products[index - 1].getDiscount(),
     });
 
     shoppingCart(cart);
@@ -149,11 +151,20 @@ import { getData, patchData } from './modules/DB.js';
       container.appendChild(itemContainer);
       ul.appendChild(container);
     }
+
+    const button = document.createElement('button');
+    button.innerText = 'Checkout';
+    button.classList.add('checkoutbtn');
+    ul.appendChild(button);
+
     parent.appendChild(ul);
 
     if (cart.getItems() !== -1) {
       parent.addEventListener('click', () => {
         document.querySelector('.nav-cart ul').style.display = 'block';
+      });
+      button.addEventListener('click', () => {
+        checkout(cart);
       });
     }
   };
@@ -171,16 +182,24 @@ import { getData, patchData } from './modules/DB.js';
         );
       }
     }
-    console.log(products[i].getId(), products[i].getAmount());
   };
 
   const checkout = (cart) => {
-    console.log(cart);
-    for (let key in cart) {
-      const { amount, id, name, price, url } = cart[key];
-      console.log(amount, id, name, price, url);
-    }
+    //TODO, Get itemstotal after refactor and display
+    // Add patchData functionality
 
-    // await patchData();
+    for (let key in cart.getItems()) {
+      const { amount, discount, id, name, price, url } = cart.getItems()[key];
+      const product = new PatchObj(
+        amount - cart.getItems()[key].items,
+        discount,
+        id,
+        name,
+        price,
+        url
+      );
+      console.log(product);
+      // await patchData(product, id);
+    }
   };
 })();

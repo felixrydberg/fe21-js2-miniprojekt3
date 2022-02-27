@@ -168,7 +168,7 @@ import { Patch } from './modules/Patch.js';
 
     // Total sum elements
     for (let total in totals) {
-      let suffix = total === 'totaItems' ? 'st' : 'kr';
+      let suffix = total === 'totalItems' ? 'st' : 'kr';
 
       const list = document.createElement('ul');
       list.className = `list`;
@@ -219,9 +219,6 @@ import { Patch } from './modules/Patch.js';
   };
 
   const checkout = (cart, products) => {
-    //TODO, Get itemstotal after refactor and display
-    // Add patchData functionality
-
     for (let key in cart.getItems()) {
       const { amount, discount, id, name, price, url } = cart.getItems()[key];
       const product = new Patch(
@@ -236,7 +233,7 @@ import { Patch } from './modules/Patch.js';
       updateStorage(products, cart, id);
       cart.checkout();
       shoppingCart(cart);
-      // await patchData(product, id);
+      //TODO: await patchData(product, id);
     }
   };
 })();

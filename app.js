@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Cart from './modules/Cart.js';
 import Products from './modules/Products.js';
-import { firebase } from './modules/DB.js';
+import { getData, patchData } from './modules/DB.js';
 
 (function () {
   // Firebase object which enables updating database
@@ -10,8 +10,7 @@ import { firebase } from './modules/DB.js';
   (async () => {
     let products = [];
 
-    await firebase
-      .getData()
+    await getData()
       .then((r) => r.json())
       .then((d) => {
         for (let key in d) {

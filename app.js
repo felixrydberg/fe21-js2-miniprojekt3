@@ -126,6 +126,7 @@ import { Patch } from './modules/Patch.js';
       increment.addEventListener('click', () => {
         cart.incrementItem(id);
         shoppingCart(cart);
+        console.log(cart.getItems());
       });
 
       // Adds - button with eventlistener
@@ -207,8 +208,8 @@ import { Patch } from './modules/Patch.js';
   const updateStorage = (products, cart, index) => {
     const i = cart
       .getItems()
-      .findIndex((val) => val.id === products[index].getId());
-
+      .findIndex((val) => val.id === products[index - 1].getId());
+    console.log(i);
     for (let index in products) {
       if (i !== -1) {
         products[i].setAmount(
@@ -229,10 +230,17 @@ import { Patch } from './modules/Patch.js';
         price,
         url
       );
-      console.log(product);
-      updateStorage(products, cart, id);
+
+      /**
+       * I think updateStorage needs to be re-written.
+       * Not working as intended when using shoppingcart +/-
+       * and remove. Returns product undefined.
+       *
+       */
+      // updateStorage(products, cart, id);
       cart.checkout();
       shoppingCart(cart);
+
       //TODO: await patchData(product, id);
     }
   };

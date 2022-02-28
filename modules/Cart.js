@@ -58,12 +58,42 @@ export default class Cart {
     }
   }
   getTotalSum() {
-    let total = 0;
+    let sum = {
+      total: 0,
+      discounted: 0,
+      items: 0,
+    };
     this.#cart.map((val) => {
-      total += val.price * val.items;
+      if (val.items > 3) {
+        sum.discounted += Math.round(val.items * val.price * val.discount);
+        sum.total += val.items * val.price;
+        sum.items += val.items;
+      } else {
+        sum.total += val.items * val.price;
+        sum.items += val.items;
+      }
     });
-    return total;
+
+    sum.total -= sum.discounted;
+
+    return sum;
   }
+
+  updateStock() {
+    if (this.getItems() !== -1) {
+      for (let i in this.#cart) {
+        let { amount, items } = this.#cart[i];
+
+        let newStock = amount - items;
+        if (newStock > 0) {
+          this.#cart[i].amount = newStock;
+        } else {
+          this.#cart[i].amount = amount;
+        }
+      }
+    }
+  }
+
   checkout() {
     this.#cart = [];
   }

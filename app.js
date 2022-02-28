@@ -2,7 +2,6 @@
 import Cart from './modules/Cart.js';
 import Products from './modules/Products.js';
 import { getData, patchData } from './modules/DB.js';
-import { PatchObj } from './modules/Patch.js';
 
 (function () {
   // Firebase object which enables updating database
@@ -58,10 +57,11 @@ import { PatchObj } from './modules/Patch.js';
 
       main.appendChild(containerForCards);
     }
-    clickEvent(products);
+    setBtnListeners(products);
   })();
 
-  const clickEvent = (products) => {
+  // Creates btn listeners for products
+  const setBtnListeners = (products) => {
     const buttons = document.querySelectorAll('.cartbtn');
     const cart = new Cart();
 
@@ -71,6 +71,8 @@ import { PatchObj } from './modules/Patch.js';
       });
     });
   };
+
+  // Add item to array of cart products
   const addItemToCart = (cart, products, index) => {
     cart.addItem({
       id: products[index - 1].getId(),
@@ -82,12 +84,11 @@ import { PatchObj } from './modules/Patch.js';
       discount: products[index - 1].getDiscount(),
     });
 
-    shoppingCart(cart);
-    updateStorage(products, cart, index);
+    shoppingCart(cart, products, index);
   };
 
-  // Create and populate sho
-  const shoppingCart = (cart) => {
+  // Create and populate shopping cart
+  const shoppingCart = (cart, products) => {
     const parent = document.querySelector('.nav-cart');
     parent.classList.add('hidden');
     const ul = document.createElement('ul');
@@ -99,6 +100,7 @@ import { PatchObj } from './modules/Patch.js';
     for (let key in cart.getItems()) {
       const { id, name, price, items } = cart.getItems()[key];
 
+      //Start -  Elements for each item with +/- and remove btn
       const container = document.createElement('li');
 
       const itemContainer = document.createElement('ul');
@@ -115,6 +117,7 @@ import { PatchObj } from './modules/Patch.js';
       amount.classList.add('product-items');
       amount.innerText = items;
 
+      // Adds + button with eventlistener
       const increment = document.createElement('button');
       increment.innerText = '+';
       increment.setAttribute('value', id);
@@ -124,6 +127,7 @@ import { PatchObj } from './modules/Patch.js';
         shoppingCart(cart);
       });
 
+      // Adds - button with eventlistener
       const decrement = document.createElement('button');
       decrement.innerText = '-';
       decrement.setAttribute('value', id);
@@ -133,6 +137,7 @@ import { PatchObj } from './modules/Patch.js';
         shoppingCart(cart);
       });
 
+      // Adds x (remove) button with eventlistener
       const remove = document.createElement('button');
       remove.innerText = 'X';
       remove.setAttribute('value', id);
@@ -142,6 +147,7 @@ import { PatchObj } from './modules/Patch.js';
         shoppingCart(cart);
       });
 
+      // Sets the scene with all elements
       itemContainer.appendChild(nameDiv);
       itemContainer.appendChild(priceDiv);
       itemContainer.appendChild(increment);
@@ -151,13 +157,40 @@ import { PatchObj } from './modules/Patch.js';
       container.appendChild(itemContainer);
       ul.appendChild(container);
     }
+    // Ends Elements for each item with +/- and remove btn
+    // Start Elements for total price, total discount and number of items
+
+    const totals = cart.getTotalSum();
+
+    const div = document.createElement('div');
+    div.className = 'sum-container';
+
+    // Total sum elements
+    for (let total in totals) {
+      let suffix = total === 'items' ? 'st' : 'kr';
+
+      const list = document.createElement('ul');
+      list.className = `list`;
+      const listKey = document.createElement('li');
+      const listValue = document.createElement('li');
+      listKey.className = 'listitem';
+      listValue.className = 'listitem';
+
+      listKey.innerText = `${total.toUpperCase()} = `;
+      listValue.innerText = `${totals[total]} ${suffix}`;
+      list.appendChild(listKey);
+      list.appendChild(listValue);
+      div.appendChild(list);
+    }
+    // End Elements for total price, total discount and number of items
 
     const button = document.createElement('button');
     button.innerText = 'Checkout';
     button.classList.add('checkoutbtn');
-    ul.appendChild(button);
 
     parent.appendChild(ul);
+    parent.append(div);
+    parent.appendChild(button);
 
     if (cart.getItems() !== -1) {
       parent.addEventListener('click', () => {
@@ -169,37 +202,14 @@ import { PatchObj } from './modules/Patch.js';
     }
   };
 
-  // Function to update storage tally.
-  const updateStorage = (products, cart, index) => {
-    const i = cart
-      .getItems()
-      .findIndex((val) => val.id === products[index - 1].getId());
-
-    for (let index in products) {
-      if (i !== -1) {
-        products[i].setAmount(
-          products[index].getAmount() - cart.getItems()[i].items
-        );
-      }
-    }
-  };
-
   const checkout = (cart) => {
-    //TODO, Get itemstotal after refactor and display
-    // Add patchData functionality
-
-    for (let key in cart.getItems()) {
-      const { amount, discount, id, name, price, url } = cart.getItems()[key];
-      const product = new PatchObj(
-        amount - cart.getItems()[key].items,
-        discount,
-        id,
-        name,
-        price,
-        url
-      );
-      console.log(product);
-      // await patchData(product, id);
+    cart.updateStock();
+    for (let i in cart.getItems()) {
+      patchData(cart.getItems()[i], cart.getItems()[i].id);
     }
+
+    cart.checkout();
+    shoppingCart(cart);
+    window.location.reload();
   };
 })();

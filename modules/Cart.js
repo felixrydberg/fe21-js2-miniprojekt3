@@ -83,8 +83,13 @@ export default class Cart {
     if (this.getItems() !== -1) {
       for (let i in this.#cart) {
         let { amount, items } = this.#cart[i];
-        amount -= items;
-        this.#cart[i].amount = amount;
+
+        let newStock = amount - items;
+        if (newStock > 0) {
+          this.#cart[i].amount = newStock;
+        } else {
+          this.#cart[i].amount = amount;
+        }
       }
     }
   }

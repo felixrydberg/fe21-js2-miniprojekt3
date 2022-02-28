@@ -215,11 +215,13 @@ import { Patch } from './modules/Patch.js';
         url
       );
 
-      cart.updateStock();
-      cart.checkout();
-      shoppingCart(cart);
-
       //TODO: await patchData(product, id);
     }
+
+    cart.updateStock();
+    //  cart.checkout();
+    shoppingCart(cart);
+
+    console.log(cart.getItems());
   };
 })();

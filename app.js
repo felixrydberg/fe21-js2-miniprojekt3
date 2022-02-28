@@ -2,7 +2,6 @@
 import Cart from './modules/Cart.js';
 import Products from './modules/Products.js';
 import { getData, patchData } from './modules/DB.js';
-import { Patch } from './modules/Patch.js';
 
 (function () {
   // Firebase object which enables updating database
@@ -198,30 +197,19 @@ import { Patch } from './modules/Patch.js';
         document.querySelector('.nav-cart ul').style.display = 'block';
       });
       button.addEventListener('click', () => {
-        checkout(cart, products);
+        checkout(cart);
       });
     }
   };
 
   const checkout = (cart) => {
-    for (let key in cart.getItems()) {
-      const { amount, discount, id, name, price, url } = cart.getItems()[key];
-      const product = new Patch(
-        amount - cart.getItems()[key].items,
-        discount,
-        id,
-        name,
-        price,
-        url
-      );
-
-      //TODO: await patchData(product, id);
+    cart.updateStock();
+    for (let i in cart.getItems()) {
+      patchData(cart.getItems()[i], cart.getItems()[i].id);
     }
 
-    cart.updateStock();
-    //  cart.checkout();
+    cart.checkout();
     shoppingCart(cart);
-
-    console.log(cart.getItems());
+    window.location.reload();
   };
 })();

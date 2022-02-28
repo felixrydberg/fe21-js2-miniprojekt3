@@ -5,7 +5,8 @@ export const getData = async () => {
 };
 export const patchData = async (data, id) => {
   const index = id - 1;
-  return await fetch(
+
+  await fetch(
     `https://shoppingsite-457c2-default-rtdb.europe-west1.firebasedatabase.app/${index}.json`,
     {
       method: 'PATCH',

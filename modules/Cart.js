@@ -78,6 +78,17 @@ export default class Cart {
 
     return sum;
   }
+
+  updateStock() {
+    if (this.getItems() !== -1) {
+      for (let i in this.#cart) {
+        let { amount, items } = this.#cart[i];
+        amount -= items;
+        this.#cart[i].amount = amount;
+      }
+    }
+  }
+
   checkout() {
     this.#cart = [];
   }

@@ -93,6 +93,7 @@ footer {
   background-color: white;
 }
 .product-card {
+  color: white;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

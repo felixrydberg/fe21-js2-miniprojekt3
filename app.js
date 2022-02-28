@@ -193,7 +193,7 @@ import { getData, patchData } from './modules/DB.js';
     parent.appendChild(button);
 
     if (cart.getItems() !== -1) {
-      parent.addEventListener('click', () => {
+      document.querySelector('header nav img').addEventListener('click', () => {
         document.querySelector('.nav-cart ul').style.display = 'block';
       });
       button.addEventListener('click', () => {

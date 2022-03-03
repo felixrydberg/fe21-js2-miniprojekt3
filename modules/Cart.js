@@ -38,7 +38,7 @@ export default class Cart {
     const i = this.#cart.findIndex((val) => val.id === id);
 
     if (i !== -1) {
-      if (this.#cart[i].items > 1) {
+      if (this.#cart[i].items >= 1) {
         this.#cart[i].items++;
       }
     }

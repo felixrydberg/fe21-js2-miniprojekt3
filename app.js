@@ -7,7 +7,7 @@ import { getData, patchData } from './modules/DB.js';
   // Firebase object which enables updating database
 
   // On load, get data from database and create array of products
-  (async () => {
+  const loadPage = async () => {
     let products = [];
 
     await getData()
@@ -58,8 +58,8 @@ import { getData, patchData } from './modules/DB.js';
       main.appendChild(containerForCards);
     }
     setBtnListeners(products);
-  })();
-
+  };
+  loadPage();
   // Creates btn listeners for products
   const setBtnListeners = (products) => {
     const buttons = document.querySelectorAll('.cartbtn');
@@ -202,14 +202,15 @@ import { getData, patchData } from './modules/DB.js';
     }
   };
 
-  const checkout = (cart) => {
+  const checkout = async (cart) => {
     cart.updateStock();
     for (let i in cart.getItems()) {
-      patchData(cart.getItems()[i], cart.getItems()[i].id);
+      patchData({ amount: cart.getItems()[i].amount }, cart.getItems()[i].id);
     }
 
     cart.checkout();
     shoppingCart(cart);
+    await loadPage();
     window.location.reload();
   };
 })();
